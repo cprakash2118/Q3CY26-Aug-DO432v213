@@ -1,0 +1,94 @@
+https://reprint.forrester.com/reports/the-forrester-wavetm-multicloud-container-platforms-q3-2025-f3367e46/index.html
+https://github.com/cprakash2118/Q3CY26-Aug-DO432v213
+DO432 - Multicluster Management with Red Hat Advanced Cluster Management for Kubernetes
+
+###Point-01#
+Product - Red Hat OpenShift 
+Add-Ons - Red Hat Advanced Cluster Management (RHACM/ACM)
+
+Product Editions:-
+1-# Cloud services editions
+ - Red Hat OpenShift Service on AWS            [ROSA - openshift on AWS]
+ - Microsoft Azure Red Hat OpenShift           [ARO  - OpenShift on Azure]
+ - Red Hat OpenShift Dedicated                 [OpenShift on GCP/AWS]
+ - Red Hat OpenShift on IBM Cloud              [OpenShift on IBM Cloud]
+ 
+2-# Self-managed editions
+ - Red Hat OpenShift Kubernetes Engine         [RHOKE - Basic]
+ - Red Hat OpenShift Container Platform        [RHOCP - Standard]
+ - Red Hat OpenShift Virtualization Engine     [RHOVE - Add-Ons for OpenShift Virtualization - KubeVirt]
+ - Red Hat OpenShift Platform Plus             [RHOPP - Multiple add-onds like ACM,ACS,ODF,AI etc 
+ 
+3-# Services & add-ons
+ - Red Hat OpenShift AI
+ - Red Hat OpenShift Lightspeed
+ - Red Hat OpenShift Virtualization
+ - Red Hat Quay
+ - Red Hat Advanced Cluster Management for Kubernetes
+ - Red Hat Advanced Cluster Security for Kubernetes
+ - Red Hat Advanced Developer Suite
+ - Red Hat OpenShift Consulting 
+ 
+---------- 
+ Add-Ons - Red Hat Advanced Cluster Management (RHACM/ACM)
+----------
+- https://www.cncf.io/training/certification/software-conformance/
+
+
+###Point-02# Classroom Environment (Consider ACM onboarding situation).
+1-) Users details:-
+    Login to VMs/Servers 
+	- student/student (sudo access)
+	- root/redhat
+	
+	Login to OCP clusters
+	- admin/redhatocp      (cluster-admin ; it's same as root account w.r.t Linux)
+	- developer/developer     
+	FYI- 
+	- OAuth (Identity Broker on behalf of OpenShift) sync with IdPs and enabled token based authentication.
+	- Both accounts (admin & developer) belongs to LDAP.
+
+    API URL:- 
+	Cluster-01 -> https://api.ocp4.example.com:6443 
+	Cluster-02 -> https://api.ocp4-mng.example.com:6443 
+   
+     Example:-
+	 $ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+	 $ oc login --token=kjshdkjsahdkj --server=https://api.ocp4.example.com:6443 
+	 FYI- Token = userName + Passowrd 
+
+    c1-Web Console -> https://console-openshift-console.apps.ocp4.example.com 
+    c2-Web Console -> https://console-openshift-console.apps.ocp4-mng.example.com
+
+Task-01# ACM:- Install RHACM on cluster-01 (via CLI/Web Console).
+
+2-) Domain/Network 
+    Network Name               Domain Name            IP Range
+	Classroom Network          example.com            172.25.252.0/24 
+	Student Network            lab.example.com        172.25.250.0/24
+	cluster-1                  ocp4.example.com       192.168.50.0/24
+	cluster-2                  ocp4-mng.example.com   192.168.51.0/24
+	
+3-) VMs/Servers:-
+    classroom.example.com          [proxy server to access internet - quay.io/github.com etc]
+	workstation.lab.example.com    [JUMP server]
+	bastion.lab.example.com        [DNS/Connect student/cluster1-2 network to classroom network]
+	utility.lab.example.com        [Imp-LB/DNS/DHCP/Pxe-Kickstart/NFS-server etc, connect student to c1-2]
+	registry.ocp4.example.com      [image/source code]
+	or git.ocp4.example.com     
+	idm.ocp4.example.com           [LDAP server - already integrated with OCP clusters c1-2]
+	master01.ocp4.example.com      [cluster-01]
+	master101.ocp4.example.com     [cluster-02]
+	
+Product - Red Hat OpenShift (ocpV4.18)
+Add-Ons - Red Hat ACM (v2.13)
+
+
+###Point-03#
+Task-03# RHACM installed on one the of the OCP cluster.
+
+Major responsibilities with RHACM.
+1-# Cluster lifecycle management.
+2-# Governance Policy (Policy lifecycle management)
+3-# Application lifecycle management (via ArgoCD - push/pull methods)
+4-# Observability Stack 
