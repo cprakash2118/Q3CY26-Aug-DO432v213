@@ -1,0 +1,81 @@
+
+Point-01# Product and Add-ons 
+Product - Red Hat OpenShift 
+Add-ons - Red Hat Advance Cluster Management (RHACM)
+
+Point-02# Classroom environment w.r.t DO432 (Consider this as Prod setup and ACM onboarding).
+
+Point-03#
+ - Major responsibilities with RHACM.
+   1-# Cluster lifecycle management.
+   2-# Governance Policy (Policy lifecycle management)
+   3-# Application lifecycle management (via ArgoCD - push/pull methods)
+   4-# Observability Stack 
+
+Product Documentation:-
+RHOCPv4.18 - https://docs.redhat.com/en/documentation/openshift_container_platform/4.18
+RHACMv2.13 - https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13
+
+Unit-1 & 2nd:-    1-# Cluster lifecycle management (Create/destry/import/detach cluster w.r.t HUB - ACM).
+
+Task-01# RHACM installation on one of the OpenShift cluster.
+Task-02# Once ACM installed, Create "MultiHUb cluster" instance (Enabled all ACM components).
+Task-03# Once ACM and "MultiHUb Cluster" deployed then access ACM dashboard (Explore the other components - Point-03).
+Task-04# Import other certified enterprise k8s clusters (Listed by CNCF).
+         Reference list - https://www.cncf.io/training/certification/software-conformance/
+Task-05# Detach the imported/registered cluster from HUB cluster.
+Task-06# AFter detach again import the same cluster to HUB cluster (Later we will discuss the TS part while importing cluster to HUB).
+
+Task-07# Adding imported/registered cluster to "clusterSet" (Discuss about clusterSet part).
+Task-08# Example to deploy application/policy via "ClusterSet" (Main focus on clusterSet).
+
+
+Task-01# RHACM installation on one of the OpenShift cluster.
+  - OperatorHub (Standard way to install Operators) 
+    - via Web Console (This is more recomm)
+    - via CLI mode (og/sub/ip/csv)
+	
+  - Select the OpenShift cluster (Where ACM deployment take place).
+    As per DO432 LAB:- 
+	
+	1st cluster:-
+	 - ACM deployment on cluster-01 (ocp4 cluster)
+	 - cluster-01 -> https://api.ocp4.example.com:6443
+     - Web Console (cluster-01) -> https://console-openshift-console.apps.ocp4.example.com 
+       FYI- 
+	   - clusterName - ocp4 
+	   - baseDomain - example.com
+    
+	
+	2nd cluster:-
+    - Import/register cluster-02 with HUB cluster (ocp4-mng cluster)
+    - cluster-02 -> https://api.ocp4-mng.example.com:6443 
+       FYI- 
+	   - clusterName - ocp4-mng 
+	   - baseDomain - example.com      	
+   	
+- Installed ACM on specific OpenShift cluster (That cluster become HUB cluster).
+- ACM also managed HUB cluster as managed cluster (local-cluster).
+- Any k8s cluster when imported/registered with HUB cluster, multiple agents deployed (example - klusterlet)
+- HUB cluster services belongs to below namespaces.
+  - open-cluster-management 
+  - open-cluster-management-hub 
+  - open-cluster-management-global-set 
+
+- Managed cluster services belongs to below namespaces.
+  - open-cluster-management-agent 
+  - open-cluster-management-policy 
+  - open-cluster-management-agent-addon
+
+- ClusterSet:- Logical grouping of the cluster (Under ACM). 
+- One cluster can not be part of multiple clusterSet.
+- While onboarding new k8s cluster to HUB cluster, bydefault cluster be part of "default" clusterSet.
+- While onboarding new k8s cluster to HUB cluster, bydefault cluster also part of "global" clusterset.
+- When create new clusterSet or adding cluster to other clusterSet then it transfer the clusterSet owenership.
+
+ClusterSet (by default)
+global  - any cluster imported/created and managed by HUB cluster will be part of global.
+default - while importing cluster if you have not define the clusterSet then cluster moved to default.
+
+rosa-clusterSet  - c1,c2,c3 
+cloud-clusterSet - c1,c4,c5 
