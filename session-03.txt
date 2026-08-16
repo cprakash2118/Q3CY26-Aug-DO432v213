@@ -1,0 +1,124 @@
+### Quick Recap And continue with use case:-
+Task-01) RHACM Deployment:-
+  - RHACM operator instllation.
+  - Create MultiCLuster HUB instance.
+  - Verify the backend flow when RHACM installed on one of the OpenShift Cluster.
+  
+Task-02) Import the cluster to RHACM.
+  - Import/register the existing cluster to HUB cluster.
+  - TS part while import/detach and again import to HUB cluster. (This is pending)
+  
+Task-03) Setup and define clusterSet (Which allow to deploy applications/policy/etc).
+   cluster-01 -> default-application as clusterSet 
+   FYI 
+   - consider two clusters and it's clusterSet 
+   - Exmple:- default as clusterSet where "local-cluster" only part and managed-cluster part of application.
+   
+   cluster-02 -> virtualization as clusterSet 
+  
+Task-04) Role Based Access Control (RBAC) on Multi cluster level.
+  - OAuth cluster service enable LDAP/htpasswd as IdPs.
+  - RBAC once Groups/Users are sync on multi cluster level.
+    - RBAC permissions - admin/edit/bind 
+  - Veify the RBAC. 
+
+Task-05) Governance Policy 
+  - POlicies concepts and implementation.
+  - PolicyGenerator 
+  - Couple of more impt concepts will dicuss.
+  
+------------------------------------------------------
+1-Clusters environment?
+2-AUthentication environment?
+
+Cluster-01 (c1) 
+ API URL -> https://api.ocp4.example.com:6443 
+ Web URL -> https://console-openshift-console.apps.ocp4.exampel.com 
+ 
+
+Cluster-02 (c2) 
+ API URL -> https://api.ocp4-mng.example.com:6443 
+ Web URL -> https://console-openshift-console.apps.ocp4-mng.exampel.com 
+ 
+ 
+Consider like this also:-
+Cluster-01  -> local-cluster (HUB cluster) - RHACM installed.
+Cluster-02  -> default-application (cluster-01/02 both consider like one)
+Cluster-03  -> virtualization 
+  
+  
+  
+- 
+Task-01- RHACM installed (Cluster Lifecycle Management) 
+Task-02- Import cluster  (As of now scope only to import the cluster)
+Task-03- Implement RBAC 
+Task-04- Governance Policy (Policy Lifecycle Management)
+Task-05- Application Lifecycle Management 
+Task-06- Enable Observability Stack (w.r.t Prometheus/Grafana)
+
+
+RHACM:-
+- CLuster Lifecycle Management
+- Governance Policy (Policy Lifecycle Management)
+- Application Lifecycle Management
+- Observability Stack 
+-------------------------------------------------------
+Task-
+01) RHACM Deployment:-
+  - RHACM operator instllation.
+  - Create MultiCLuster HUB instance.
+  - Verify the backend flow when RHACM installed on one of the OpenShift Cluster.
+  
+ What is "MultiClusterHub" ?
+ This is the main custom resource (CR) that instruct the RHACM operator to:-
+ - Intsall 
+ - Configure 
+ - Manage and 
+ - Upgrade
+ All RHACM hub components.
+ 
+ Example:-
+ - INstalling ACM operator install the controller.
+ - Creating "MultiClusterHub" tells the controller to build the actual ACM HUB.
+ 
+Componets & Pupose (Understading w.r.t RHACM operator and MultiClusterHub).
+- RHACM Operator - Watches and amanges RHACM resources.
+- MultiClusterHub CR - Requets deployment of the complete RHACM HUB.
+- HUB Cluster - Central cluster used to manage other "managed cluster".
+- Managed Cluster - Remote OpenShift/kubernetes cluster managed by the HUB cluster.
+  FYI- https://www.cncf.io/training/certification/software-conformance/
+- klusterlet - Node agent running on each managed cluster.
+  
+
+- When RHACM installed on one of the OpenShift cluster.
+  - Default namespace for ACM (HUB cluster) 
+    - open-cluster-management
+    - open-clutser-management-hub
+	- open-cluster-management-global-set
+	
+  - Default namespace for "local-cluster/managed-cluster".
+    - open-cluster-management-agent 
+	- open-cluster-management-policies 
+	- open-cluster-management-agent-addon 
+	
+
+Task-02) Import the cluster to RHACM.
+  - Import/register the existing cluster to HUB cluster.
+  - TS part while import/detach and again import to HUB cluster. (Pending)
+  
+  
+Task-03) Setup and define clusterSet (Which allow to deploy applications/policy/etc).
+   cluster-01 (local-cluster)    -> "default-application" as clusterSet 
+   cluster-02 (managed_-cluster) -> "virtualization" as clusterSet 
+  
+  By Default all cluster(s) are part of below clusterSet:-
+  - "global" clusterSet  - All registered clusters are part of this clusterSet.
+  - "default" clusterSet - Importing any cluster to RHACM with predefined clusterSet, in that case automatically cluster is the part of "default" clusterSet.
+
+Task-04) Role Based Access Control (RBAC) on Multi cluster level.
+  - OAuth cluster service enable LDAP/htpasswd as IdPs.
+  - RBAC once Groups/Users are sync on multi cluster level.
+    - RBAC permissions - admin/edit/bind 
+  - Veify the RBAC.  
+ 
+	
