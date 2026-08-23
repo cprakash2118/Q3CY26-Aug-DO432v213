@@ -1,0 +1,100 @@
+CLuster detaols:-
+ - C1 -> https://api.ocp4.example.com:6443 
+ - C2 -> https://api.ocp4-mng.example.com:6443 
+
+Task-01# Install RHACM on C1 (RHACM operator installation and created "MulticlusterHUB" instance).
+Task-02# Import existing cluster (c2) - Both clusters (local-cluster & managed-cluster) belongs to default clusterSet.
+Task-03# Created new clusterSet 
+  - application -> C1 
+  - virtualization -> C2 
+Task-04# RBAC on Multi CLuster level (Over RHACM) - admin/view/bind.
+         user1-5  -> sre-team (admin access w.r.t application clusterSet)
+		 user6-10 -> myapp-team (view access w.r.t application clusterSet).
+		 user6    -> bind access w.r.t application clusterSet
+		 And ver have verifed.
+		 
+Task-05# Governance Policy:-
+-----------
+
+1- What is RHACM Governance?
+Governance -> Control + Visibility + Enforcement
+1-) Policy defination (What is allowed/required).
+2-) Policy placement (Where it apply)
+3-) Compliance reporting (WHo is compliant/ non compliant).
+4-) Optional remediaion (auto-fix voilations).
+
+All these points works across cluster.
+
+
+2- Policy Based Governance Architecture.
+HUB Cluster (CP - Control Plane):-
+ - POlicy CRs are created only here (AT HUB cluster)
+ - Policies are replicated to managed cluster.
+ - compliance is agrregated back.
+ 
+ 
+Managed cluster (Execution Plane):-
+ - COntrollers evaluate policies 
+ - Generate voilations
+ - Optionally remediate 
+ 
+3- COre Governance components:-
+ 3.1- Governance Dashboard:-
+      - GUI for -> Creating policies; viewing voilations; Enabling/disabling enforcement.
+      - Filters by -> cluster, namespace,severity and remediaion state.
+   
+ 3.2- POlicy Controllers:-
+     COntrollers watch policy CRs, evaluate compliants and gererate events.
+	 CRD-based system built on:-
+	 - policy 
+	 - Placement 
+	 - placementBinding 
+	 - policySet 
+
+Policy lifecycle management:-
+1-) Create policy on HUB cluster.
+2-) Placement selects cluster 
+3-) POlicy Propagator (replicates policy to managed cluster).
+4-) Managed cluster controllers evaluate.
+--------------
+FYI- While importing cluster:-
+     open-cluster-management-agent 
+	 open-cluster-management-agent-add-ons 
+	 open-cluster-management-policy 
+--------------
+
+5-)Violation/Event generated
+
+6-) Status sync back to HUB cluster 
+7-) Dashboard show/display complainance 
+8-) Optional remediaion happens.
+
+
+Task-05# Governance Policy:-
+1-# Install some operators 
+   - Gatekeep operator installation (OPA and Gatekeep configuration)
+   - compliant operator installation
+   
+2-# Namespace creation (2,3 namespace creation).
+
+3-# Install & configure ArgoCD operator
+4-# Install & configure OADP operator
+5-# Install & COnfiure Openshift-loggin solution 
+
+
+Step-1# DO namespace binding before policy implementation.
+ user1-5 - admin access on ACM level.
+
+Logged in as "admin" - with cluster-admin access  
+$ oc create namespace ns-policy-complainance-task 
+$ oc create namespace ns-policy-gatekeeper-task
+$ oc create namespace ns-policy-argocd-task 
+
+$ oc adm policy add-role-to-group admin sre-team -n ns-policy-complainance-task
+$ oc adm policy add-role-to-group admin sre-team -n ns-policy-gatekeeper-task
+$ oc adm policy add-role-to-group admin sre-team -n ns-policy-argocd-task
+
+ 
+ 
+     
+   

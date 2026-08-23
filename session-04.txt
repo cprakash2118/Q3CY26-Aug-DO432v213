@@ -1,0 +1,74 @@
+Problem:-  Multi Cluster Management.
+Solution:- Red Hat Advance CLuster Management/SUSE Rancher
+
+Advance Cluster Management:-
+1-) Cluster Lifecycle Management
+2-) Governance Policy  
+
+3-) Application Lifecycle Management 
+4-) Observability Stack (enable)
+
+EX432v213
+Product - OCPv418 - https://docs.redhat.com/en/documentation/openshift_container_platform/4.18
+Add-ons - ACMv213 - https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13
+
+Total 13 Questions:-
+Q1- ACM installation on one of the node.
+Q2- Import exisiting cluster to HUB cluster.
+Q3- Governance Policy case-01 - Policy deployment
+Q4- Governance Policy case-02 - Gatekeeper installation (engine)
+Q5- Governance Policy Case-03 - Gatekeeper Config 
+Q6- Governance Policy case-04 - Policy deployment
+Q7- RBAC on Multi cluster level 
+
+Q8- Observability stack to be enable 
+Q9- Scale up the Observability Stack 
+Q10- Register ArgoCD to HUB 
+Q11- Application deployment via ACM (kustomize and Overlay)
+Q12- Application deployment via ACM (OpenShift Virtualization deployment)
+Q13- Application deployment via ACM (VMs operations - VMs based on KubeVirt).
+----------------
+Advance Cluster Management:-
+1-) Cluster Lifecycle Management
+2-) Governance Policy
+
+###################### Task-1# RHACM Deployment.
+ - RHACM operator installation (Web Console/CLI).
+ - Create "MulclusterHUB" - core component (It will deploy all required components for RHACM).
+ 
+ cluster-01 -> ocp4      (https://api.ocp4.example.com:6443)     -> Selected for RHACM (Consider HUB cluster).
+  ACM-Server 
+  open-cluster-management 
+  open-cluster-management-hub 
+  open-cluster-management-global-set 
+  
+  ACM Client 
+   open-cluster-management-agent 
+   open-cluster-management-agent-add-ons 
+   open-cluster-management-policy
+ 
+ cluster-02 -> ocp4-mng  (https://api.ocp4-mng.example.com:6443)
+   open-cluster-management-agent 
+   open-cluster-management-agent-add-ons 
+   open-cluster-management-policy 
+ 
+
+###################### Task-02# Import exisiting cluster to HUB cluster.
+ ClusterSet - Logical grouping of your Clusters.
+ 
+ Default clusterSet 
+ global 
+ default 
+ 
+   ClusterSet              ClusterName 
+ default-application -> local-cluster 
+ virtualization      -> managed-cluster 
+
+
+###################### Task-03# RBAC on Multi cluster level 
+Imp Point- Must be having centralized user/group management.
+
+
+ 
+
+
