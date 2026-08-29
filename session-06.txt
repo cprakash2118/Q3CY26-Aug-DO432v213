@@ -1,0 +1,92 @@
+Docs:-
+Product - Red Hat OpenShift 
+https://docs.redhat.com/en/documentation/openshift_container_platform/4.18
+
+Add-ons - Red Hat Advance Cluster Management 
+https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13
+
+
+##############
+Unit-1# Installing Red Hat Advanced Cluster Management for Kubernetes
+- The Kubernetes Multicluster and Hybrid Cloud Architecture Landscape.
+- Architecture of Red Hat Advanced Cluster Management for Kubernetes.
+- Installing Red Hat Advanced Cluster Management for Kubernetes
+
+Install RHACM on OCP cluster -> HUB cluster [Server side]
+Installed ACM on OCP cluster -> local-cluster (This also managed by ACM) [Client Side]
+ - namespaces involved (server side)
+   open-cluster-management 
+   open-cluster-management-hub 
+   open-cluster-management-global-set  
+   
+ - namespaces involved (client side)
+   open-cluster-management-agent 
+   open-cluster-management-policy 
+   open-cluster-management-agent-addon
+   
+Task-01# Install RHACM on 1st cluster (ocp4).
+Cluster-01 (ocp4)     -> https://api.ocp4.example.com:6443 
+Cluster-02 (ocp4-mng) -> https://api.ocp4-mng.example.com:6443    
+Access the ACM CP and verify all components.
+
+   
+###############  
+Unit-2-# Managing Clusters by Using Red Hat Advanced Cluster Management for Kubernetes
+ - Cluster Lifecycle Management by Using the RHACM Web Console
+ - Navigating the RHACM Web Console 
+ - Configuring Access Control for Multicluster Management
+ - Troubleshooting Common Import Issues for Managed Clusters (Pending part).
+ 
+Task-02# Import cluster as per the conditions.
+ - application-clusterset     [local-cluster]
+ - virtualization-clusterset  [managed-cluster]
+
+Task-03# Implement RBAC on ACM level. 
+ 
+###ACM level access 
+ user1-5   -> sre-team (admin) w.r.t application-clusterset 
+ user6-10  -> devops-team (admin) w.r.t virtualization-clusterset
+ user11-15 -> mon-team (view)  w.r.t application-clusterset/virtualization-clusterset
+ user11 -> bind w.r.t application-clusterset     
+ user12 -> bind w.r.t virtualization-clusterset
+
+###OCP level access as per ACM access.
+ ns-policy-01 - application-clusterset 
+ - sre-team must be admin for this NS)
+ - edit -> user11 
+ - mon-team must be view for this NS  
+ 
+ ns-policy-02 - virtualization-clusterset
+ - devops-team must be admin for this NS
+ - edit -> user12  
+ - mon-team must be view for this NS  
+ 
+ ns-policy-gatekeeper - application-clusterset
+ - sre-team must be admin for this NS)
+ - edit -> user11 
+ - mon-team must be view for this NS 
+ 
+ 
+ ns-policy-gitops - virtualization-clusterset/application-clusterset
+ - sre-team must be admin for this NS)
+ - edit -> user15
+ - devops-team must be admin for this NS 
+ - mon-team must be view for this NS.
+
+Task-04# Troubleshooting while importing the existing cluster.  (Pending).
+
+
+Unit-3# Deploying and Managing Policies for Multiple Clusters with Red Hat Advanced Cluster Management for Kubernetes
+- Red Hat Advanced Cluster Management Governance
+- Deploying Policies by Using the RHACM Governance Dashboard
+Task-05# Install operators 
+
+
+- Explain and Deploy Policies by Using Policy Generator 
+
+------ Pending------------
+OPA & Gatekeeper - Governance Policy
+- Deploying and Configuring the Compliance Operator for Multiple Clusters by Using RHACM
+- Integration of Other Policy Engines with RHACM 
+- Troubleshoot Governance Issues
+---------------------------
