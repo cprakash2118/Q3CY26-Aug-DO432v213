@@ -1,0 +1,104 @@
+#OPA and Gatekeeper :-
+
+Environment - Multiple clusters registered with ACM (Approx - 50 OpenShift - ROSA/ARO/Dedicated/OCP/OVE etc).
+Problem - TO maintain the policies/conditions:-
+ - Every namespace must contain some required labels.
+ - COntainers must not use default TAGS like ":latest".
+ - Privileged container must not be allowed.
+  etc 
+
+Solution - Policy Engines
+
+OPA - Open Policy Agent [OPA is the actual general-purpose policy engine].
+ INPUT -> Policy -> Evaluation -> Decision 
+
+Example:- 
+Input-
+ POD Image - nginx:latest 
+ 
+Policy-
+  Latest TAG is prohibited
+  
+OPA evaluation- 
+  Processed 
+  
+Decision-
+ DENY 
+ 
+FYI
+- OPA use policy language called REGO.
+- OPA is like Policy Decision Engine
+
+Passenger -> Security rules -> Security officer -> Allow/Deny 
+
+Request -> Rego Policy -> OPA -> Allow/Deny 
+
+## Gatekeeper is OPA adapted Kubernetes admission control.
+ Gatekeeper as an OPA use case for k8s that operate as a K8s admission-controller webhook.
+ After authentication & athorization, admission controller validate API request and block that request that voilate policy 
+ 
+ OPA 
+   -> General-purpose policy engine.
+ gatekeeper
+   -> K8s policy enforcement.
+   
+OPA 
+- Policy Engine 
+- General-purpose
+- Use Rego 
+- Evaluate policies 
+- can be used outside k8s 
+
+Gatekeeper
+- k8s integration for OPA.
+- Kubernetes focused 
+- Use OPA/Rego 
+- Integrate policy decisions with k8s adminsion/audit 
+- Designed for k8s 
+
+
+FYI- OPA makes policy decisions; gatekeeper being OPA-policy enforcement into k8s.
+
+1-) Developer (Middleware Team) - oc apply -f pod.yaml 
+2-) Kubernetes API Server 
+3-) Authentication (Token, UserName/Password)
+4-) Authorization (RBAC provided by OAuth)
+5-) Admisison Control
+6-) Gatekeeper 
+      |-> Evaluate policy 
+	       |-> Compliant   -> Resource accepted 
+		   |-> noncomliant -> Rject/report 
+
+-------------
+Authentication -> Who are you?
+Then 
+Authorization -> Are you allowed to create POD ?
+
+gatekeeper admission policy can ask:-
+  Is this POD you are attempting to create compliant with our rules?
+
+
+Gatekeeper has two very imp objects:-
+1-) constraintTemplate 
+2-) constraint 
+
+ConstaintTemplate - It define reusable policy logic and create new constraint type.
+
+ConstaintTemplate -> k8sRequiredLabels 
+
+Example:-
+ ConstaintTemplate -? Policy logic -> k8sRequiredLabels "Check whether required labels exist or not"
+ 
+
+ConstaintTemplate -> What kind of policy can exist ?
+Constaint         -> HOw should we check ?
+
+Example:-
+ ConstaintTemplate -> k8sRequiredLabels (Constaint) -> apply to namespace -> Required label: gatekeeper
+ 
+OPA -> Uses Rego -> Gatekeeper -> ConstaintTemplate -> Rego logic -> Constaint -> Actual k8s object.
+
+Gatekeeper evaluation - Admission & Audit 
+
+------------------------
+ 
